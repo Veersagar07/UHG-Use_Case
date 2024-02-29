@@ -3,9 +3,11 @@ package com.UHGUseCase.UserPolicies.DTO;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.stereotype.Component;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-
+@Component
 public class UserDTO {
 	@JsonProperty("UserId")
 	private long userId;

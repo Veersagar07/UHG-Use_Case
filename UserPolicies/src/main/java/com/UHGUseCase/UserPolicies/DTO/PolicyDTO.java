@@ -1,6 +1,8 @@
 package com.UHGUseCase.UserPolicies.DTO;
 
+import org.springframework.stereotype.Component;
 
+@Component
 public class PolicyDTO {
 	private long policyId;
 	private String policyName;
@@ -9,20 +11,34 @@ public class PolicyDTO {
 	private int minAge;
 	private int maxAge;
 	private String renewalTerm;
+	private long coPay;
+	private long premiumAmount;
+	public long getPremiumAmount() {
+		return premiumAmount;
+	}
+
+	public void setPremiumAmount(long premiumAmount) {
+		this.premiumAmount = premiumAmount;
+	}
+
 	public PolicyDTO() {
 		super();
 	}
-	public PolicyDTO(long policyId,String policyName, Long policyCoverAmount, 
-			String description, int minAge, int maxAge, String renewalTerm) {
+	
+	public PolicyDTO(long policyId, String policyName, Long policyCoverAmount, String description, int minAge,
+			int maxAge, String renewalTerm, long coPay , long premiumAmount) {
 		super();
-		this.policyId=policyId;
+		this.policyId = policyId;
 		this.policyName = policyName;
 		this.policyCoverAmount = policyCoverAmount;
 		this.description = description;
 		this.minAge = minAge;
 		this.maxAge = maxAge;
 		this.renewalTerm = renewalTerm;
+		this.coPay = coPay;
+		this.premiumAmount=premiumAmount;
 	}
+
 	public long getPolicyId() {
 		return policyId;
 	}
@@ -64,6 +80,14 @@ public class PolicyDTO {
 	}
 	public void setRenewalTerm(String renewalTerm) {
 		this.renewalTerm = renewalTerm;
+	}
+
+	public long getCoPay() {
+		return coPay;
+	}
+
+	public void setCoPay(long coPay) {
+		this.coPay = coPay;
 	}
 	
 	

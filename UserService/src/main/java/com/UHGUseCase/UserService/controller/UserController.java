@@ -22,6 +22,7 @@ import com.UHGUseCase.UserService.Entity.Role;
 import com.UHGUseCase.UserService.Entity.User;
 import com.UHGUseCase.UserService.Repository.RoleRepo;
 import com.UHGUseCase.UserService.Repository.UserRepo;
+import com.UHGUseCase.UserService.Service.EmailService;
 import com.UHGUseCase.UserService.Service.UserService;
 
 @RestController
@@ -39,6 +40,9 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private EmailService emailService;
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> loginUser(@RequestBody AuthenticationDTO authenticationDTO) {
@@ -86,6 +90,7 @@ public class UserController {
 
 		user.setRoles(roles);
 		userRepo.save(user);
+		emailService.sendRegistrationSuccessEmail(userDto.getEmail(),userDto.getFirstName());
 		return ResponseEntity.ok("User registered successfully!");
 	}
 

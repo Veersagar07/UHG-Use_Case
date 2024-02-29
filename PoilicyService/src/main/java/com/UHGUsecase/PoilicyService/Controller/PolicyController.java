@@ -30,7 +30,7 @@ public class PolicyController {
 			return "Policy already exist";
 		}
 		Policy policy = new Policy(policyDTO.getPolicyName(), policyDTO.getPolicyCoverAmount(),
-				policyDTO.getDescription(), policyDTO.getMinAge(), policyDTO.getMaxAge(), policyDTO.getRenewalTerm());
+				policyDTO.getDescription(), policyDTO.getMinAge(), policyDTO.getMaxAge(), policyDTO.getRenewalTerm(),policyDTO.getCoPay(),policyDTO.getPremiumAmount());
 		return policyService.savePolicy(policy);
 	}
 

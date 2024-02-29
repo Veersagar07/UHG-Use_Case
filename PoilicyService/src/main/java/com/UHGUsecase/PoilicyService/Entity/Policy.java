@@ -18,10 +18,11 @@ public class Policy {
 	private int minAge;
 	private int maxAge;
 	private String renewalTerm;
+	private long coPay;
+	private long premiumAmount;
 	
-	
-	public Policy( String policyName, Long policyCoverAmount,
-			String description, int minAge, int maxAge, String renewalTerm) {
+	public Policy(String policyName, Long policyCoverAmount, String description, int minAge, int maxAge,
+			String renewalTerm, long coPay, long premiumAmount) {
 		super();
 		this.policyName = policyName;
 		this.policyCoverAmount = policyCoverAmount;
@@ -29,6 +30,8 @@ public class Policy {
 		this.minAge = minAge;
 		this.maxAge = maxAge;
 		this.renewalTerm = renewalTerm;
+		this.coPay = coPay;
+		this.premiumAmount=premiumAmount;
 	}
 	public Policy() {
 		super();
@@ -76,7 +79,18 @@ public class Policy {
 	public void setRenewalTerm(String renewalTerm) {
 		this.renewalTerm = renewalTerm;
 	}
-	
+	public long getCoPay() {
+		return coPay;
+	}
+	public void setCoPay(long coPay) {
+		this.coPay = coPay;
+	}
+	public long getPremiumAmount() {
+		return premiumAmount;
+	}
+	public void setPremiumAmount(long premiumAmount) {
+		this.premiumAmount = premiumAmount;
+	}
 	
 	
 }

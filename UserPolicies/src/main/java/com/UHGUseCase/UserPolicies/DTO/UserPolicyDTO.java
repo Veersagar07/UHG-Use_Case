@@ -1,5 +1,6 @@
 package com.UHGUseCase.UserPolicies.DTO;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 
 
@@ -9,20 +10,23 @@ public class UserPolicyDTO {
 	private long policyId;
 	private boolean isActive;
 	private LocalDateTime renewalTerm;
-
+	private Date startDate;
+	private Date endDate;
+	
 	public UserPolicyDTO() {
 		super();
 	}
-
-	public UserPolicyDTO(long id, long userId, long policyId, boolean isActive, LocalDateTime renewalTerm) {
+	public UserPolicyDTO(long id, long userId, long policyId, boolean isActive, LocalDateTime renewalTerm,
+			Date startDate, Date endDate) {
 		super();
 		Id = id;
 		this.userId = userId;
 		this.policyId = policyId;
 		this.isActive = isActive;
 		this.renewalTerm = renewalTerm;
+		this.startDate = startDate;
+		this.endDate = endDate;
 	}
-
 	public long getId() {
 		return Id;
 	}
@@ -61,6 +65,18 @@ public class UserPolicyDTO {
 
 	public void setRenewalTerm(LocalDateTime renewalTerm) {
 		this.renewalTerm = renewalTerm;
+	}
+	public Date getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	public Date getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
 
 }

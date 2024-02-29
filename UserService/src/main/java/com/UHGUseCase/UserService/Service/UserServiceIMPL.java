@@ -18,7 +18,7 @@ import com.UHGUseCase.UserService.Repository.UserRepo;
 @Service
 public class UserServiceIMPL implements UserService {
 
-	AuthenticationDTO authenticationDTO;
+		AuthenticationDTO authenticationDTO;
 	 	@Autowired
 	    private UserRepo userRepo;
 	 	

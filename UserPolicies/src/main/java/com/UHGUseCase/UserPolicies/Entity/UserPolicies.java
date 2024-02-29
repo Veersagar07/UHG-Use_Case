@@ -1,6 +1,9 @@
 package com.UHGUseCase.UserPolicies.Entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,19 +20,22 @@ public class UserPolicies {
 	private long policyId;
 	private boolean isActive;
 	private LocalDateTime renewalTerm;
-
+	private LocalDate startDate;
+	private LocalDate endDate;
 
 	public UserPolicies() {
 		super();
 	}
 
-	public UserPolicies(Long id, long userId, long policyId, boolean isActive, LocalDateTime renewalTerm) {
+	public UserPolicies(Long id, long userId, long policyId, boolean isActive, LocalDateTime renewalTerm,LocalDate startDate,LocalDate endDate) {
 		super();
 		Id = id;
 		this.userId = userId;
 		this.policyId = policyId;
 		this.isActive = isActive;
 		this.renewalTerm = renewalTerm;
+		this.startDate=startDate;
+		this.endDate=endDate;
 	}
 
 	public Long getId() {
@@ -70,6 +76,22 @@ public class UserPolicies {
 
 	public void setRenewalTerm(LocalDateTime renewalTerm) {
 		this.renewalTerm = renewalTerm;
+	}
+
+	public LocalDate getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+	}
+
+	public LocalDate getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(LocalDate endDate) {
+		this.endDate = endDate;
 	}
 	
 	
