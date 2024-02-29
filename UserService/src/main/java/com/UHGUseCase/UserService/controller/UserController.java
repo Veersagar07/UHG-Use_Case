@@ -47,6 +47,8 @@ public class UserController {
 	@PostMapping("/signin")
 	public ResponseEntity<?> loginUser(@RequestBody AuthenticationDTO authenticationDTO) {
 		AuthnticationResponce authnticationResponce = userService.loginUser(authenticationDTO);
+		String emailto = authenticationDTO.getEmail();
+		emailService.signinSecurityAlertEmail(emailto);
 		return ResponseEntity.ok(authnticationResponce);
 	}
 

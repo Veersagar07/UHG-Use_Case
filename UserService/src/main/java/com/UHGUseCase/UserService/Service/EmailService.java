@@ -50,5 +50,27 @@ public class EmailService {
 		}
 	}
 	
+	public void signinSecurityAlertEmail(String emailto) {
+		try {
+			MimeMessage message= javaMailSender.createMimeMessage();
+			MimeMessageHelper helper=new MimeMessageHelper(
+					message,
+					MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+					StandardCharsets.UTF_8.name()
+					);
+			helper.setTo(emailto);
+			Map<String, Object> variables = new HashMap<>();
+            variables.put("email", emailto);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            variables.put("date", sdf.format(new Date()));
+            helper.setSubject("Security Alert");
+            helper.setText(thymeleafService.createContent("signinSecurityAlert.html", variables), true);
+            helper.setFrom(email);
+			javaMailSender.send(message);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 }
