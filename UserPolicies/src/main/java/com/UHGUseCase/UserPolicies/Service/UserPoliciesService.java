@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.UHGUseCase.UserPolicies.DTO.PolicyClaimDTO;
 import com.UHGUseCase.UserPolicies.DTO.PolicyClaimResponse;
 import com.UHGUseCase.UserPolicies.DTO.PolicyDTO;
+import com.UHGUseCase.UserPolicies.Entity.PolicyClaim;
 
 
 public interface UserPoliciesService {
@@ -17,4 +18,5 @@ public interface UserPoliciesService {
 	List<PolicyDTO> getPolicyOfUser(long userId);
 	ResponseEntity<String> applyforClaim(long userId, long policyId, long totalAmount,String hospitalName);
 	PolicyClaimResponse getClaimDetails(long userId,long policyId);
+	List<PolicyClaim> getPreviousClaimsDetails(long userId);
 }

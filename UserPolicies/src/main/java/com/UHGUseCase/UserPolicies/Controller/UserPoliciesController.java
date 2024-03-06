@@ -47,4 +47,10 @@ public class UserPoliciesController {
 		return claimResponse;
 		
 	}
+	
+	@GetMapping("/getPreviousClaimDetails")
+	private List<PolicyClaim> getPreviousClaimDetails(@RequestParam long userId){
+		List<PolicyClaim> policyClaims=userPoliciesService.getPreviousClaimsDetails(userId);
+		return policyClaims;
+	}
 }

@@ -139,4 +139,8 @@ public class UserPoliciesServiceIMPL implements UserPoliciesService {
 		return response;
 	}
 	
+	@Override
+	public List<PolicyClaim> getPreviousClaimsDetails(long userId){
+		return policyClaimRepo.getPolicyClaimDetailsByUserId(userId);		
+	}
 }
