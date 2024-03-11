@@ -125,7 +125,8 @@ public class UserPoliciesServiceIMPL implements UserPoliciesService {
 		for (PolicyClaim policyClaim : policyClaimDetailsByUserId) {
 			if (policyClaim.getPolicyId() == policyId) {
 				policyClaimData.add(policyClaim);
-			}		}
+			}
+		}
 
 		PolicyClaimResponse response = new PolicyClaimResponse();
 		response.setPolicyClaim(policyClaimData);
@@ -135,19 +136,17 @@ public class UserPoliciesServiceIMPL implements UserPoliciesService {
 
 	@Override
 	@Transactional
-	public ResponseEntity<String>  processClaim(long userId, long policyId, String action) {
+	public ResponseEntity<String> processClaim(long userId, long policyId) {
 
 		List<PolicyClaim> pendingClaims = policyClaimRepo.getPendingClaims("Pending");
-		System.out.println(pendingClaims);
 		if (!pendingClaims.isEmpty()) {
 			for (PolicyClaim policyClaim : pendingClaims) {
-				if ("approve".equalsIgnoreCase(action)) {
+				if (!isRejectionValid(policyClaim)) {
+					policyClaim.setClaimStatus("Rejected");
+					policyClaim.setSettledAmount(0);
+				}
+				else {
 					policyClaim.setClaimStatus("Approved");
-				} else if ("reject".equalsIgnoreCase(action)) {
-					if (isRejectionValid(policyClaim)) {
-						policyClaim.setClaimStatus("Rejected");
-						policyClaim.setSettledAmount(0);
-					}
 				}
 				policyClaimRepo.save(policyClaim);
 			}
@@ -155,15 +154,16 @@ public class UserPoliciesServiceIMPL implements UserPoliciesService {
 		return ResponseEntity.ok("Claim Processed");
 	}
 
-	
 	private boolean isRejectionValid(PolicyClaim policyClaim) {
-//	    List<HospitalDTO> allHospitals = hospitalFeignClient.getAllHospitals();
-//	    String policyHospitalName = policyClaim.getHospitalName();
-//	 
-//	    if(!allHospitals.contains(policyHospitalName)) {
-//	    	return false;
-//	    }
-	    return true;
+
+		List<HospitalDTO> allHospitals = hospitalFeignClient.getAllHospitals();
+		String policyHospitalName = policyClaim.getHospitalName();
+		for (HospitalDTO hospitalDTO : allHospitals) {
+			if (hospitalDTO.getHospitalName().equals(policyHospitalName) && hospitalDTO.getHospitalName()!=null) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override

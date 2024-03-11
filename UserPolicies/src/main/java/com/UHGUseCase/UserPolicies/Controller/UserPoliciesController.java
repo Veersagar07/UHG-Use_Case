@@ -73,8 +73,8 @@ public class UserPoliciesController {
 	}
 	
 	@PostMapping("/processClaim")
-	private ResponseEntity<String> processClaim(@RequestParam long userId,@RequestParam long policyId,@RequestParam String action){
-		 ResponseEntity<String> response = userPoliciesService.processClaim(userId, policyId, action);
+	private ResponseEntity<String> processClaim(@RequestParam long userId,@RequestParam long policyId){
+		 ResponseEntity<String> response = userPoliciesService.processClaim(userId, policyId);
 		if(response!=null) {
 			return response;
 		}
