@@ -2,23 +2,20 @@ package com.UHGUseCase.UserPolicies.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import com.UHGUseCase.UserPolicies.DTO.PolicyClaimDTO;
+import com.UHGUseCase.UserPolicies.DTO.HospitalDTO;
 import com.UHGUseCase.UserPolicies.DTO.PolicyClaimResponse;
 import com.UHGUseCase.UserPolicies.DTO.PolicyDTO;
-import com.UHGUseCase.UserPolicies.DTO.UserPolicyDTO;
 import com.UHGUseCase.UserPolicies.Entity.PolicyClaim;
 import com.UHGUseCase.UserPolicies.Entity.UserPolicies;
+import com.UHGUseCase.UserPolicies.FeignClient.HospitalFeignClient;
 import com.UHGUseCase.UserPolicies.FeignClient.PolicyFeignClient;
 import com.UHGUseCase.UserPolicies.Repo.PolicyClaimRepo;
 import com.UHGUseCase.UserPolicies.Repo.UserPolicyRepo;
-
 import jakarta.transaction.Transactional;
 
 @Service
@@ -33,12 +30,14 @@ public class UserPoliciesServiceIMPL implements UserPoliciesService {
 	@Autowired
 	private PolicyClaimRepo policyClaimRepo;
 
+	@Autowired
+	private HospitalFeignClient hospitalFeignClient;
 
 	@Override
 	public ResponseEntity<String> optForPolicy(long userId, long policyId) {
 		UserPolicies userPolicies = new UserPolicies();
-		UserPolicies existingUserPOlicy=userPolicyRepo.findByUserIdAndPolicyId(userId, policyId);
-		if (existingUserPOlicy!=null) {
+		UserPolicies existingUserPOlicy = userPolicyRepo.findByUserIdAndPolicyId(userId, policyId);
+		if (existingUserPOlicy != null) {
 			return ResponseEntity.ok("Policy Already Opted");
 		} else {
 			List<PolicyDTO> policyDTOList = policyFeignClient.findByPolicyId(policyId);
@@ -93,10 +92,11 @@ public class UserPoliciesServiceIMPL implements UserPoliciesService {
 			double coPay = policyDTO.getCoPay();
 			double coPayment = totalAmount * (coPay / 100);
 			double claimAmount = totalAmount - coPayment;
-			if (claimAmount< policyDTO.getPolicyCoverAmount()) {
+			if (claimAmount < policyDTO.getPolicyCoverAmount()) {
 				claim.setSettledAmount(claimAmount);
 			} else {
-				double amountToBePaid=policyDTO.getPolicyCoverAmount()-(policyDTO.getPolicyCoverAmount() * (coPay / 100));
+				double amountToBePaid = policyDTO.getPolicyCoverAmount()
+						- (policyDTO.getPolicyCoverAmount() * (coPay / 100));
 				claim.setSettledAmount(amountToBePaid);
 			}
 			claim.setClaimDate(endDate);
@@ -111,7 +111,6 @@ public class UserPoliciesServiceIMPL implements UserPoliciesService {
 		return ResponseEntity.ok("Claim Applied");
 	}
 
-	
 	@Override
 	@Transactional
 	public PolicyClaimResponse getClaimDetails(long userId, long policyId) {
@@ -125,32 +124,62 @@ public class UserPoliciesServiceIMPL implements UserPoliciesService {
 		}
 		for (PolicyClaim policyClaim : policyClaimDetailsByUserId) {
 			if (policyClaim.getPolicyId() == policyId) {
-				policyClaim.setClaimStatus("Approved");
 				policyClaimData.add(policyClaim);
-			}
-		}
+			}		}
 
 		PolicyClaimResponse response = new PolicyClaimResponse();
 		response.setPolicyClaim(policyClaimData);
 		response.setPolicyDTOs(policyDTOList);
 		return response;
 	}
-	
+
 	@Override
-	public List<PolicyClaim> getPreviousClaimsDetails(long userId){
-		return policyClaimRepo.getPolicyClaimDetailsByUserId(userId);		
+	@Transactional
+	public ResponseEntity<String>  processClaim(long userId, long policyId, String action) {
+
+		List<PolicyClaim> pendingClaims = policyClaimRepo.getPendingClaims("Pending");
+		System.out.println(pendingClaims);
+		if (!pendingClaims.isEmpty()) {
+			for (PolicyClaim policyClaim : pendingClaims) {
+				if ("approve".equalsIgnoreCase(action)) {
+					policyClaim.setClaimStatus("Approved");
+				} else if ("reject".equalsIgnoreCase(action)) {
+					if (isRejectionValid(policyClaim)) {
+						policyClaim.setClaimStatus("Rejected");
+						policyClaim.setSettledAmount(0);
+					}
+				}
+				policyClaimRepo.save(policyClaim);
+			}
+		}
+		return ResponseEntity.ok("Claim Processed");
 	}
+
 	
+	private boolean isRejectionValid(PolicyClaim policyClaim) {
+//	    List<HospitalDTO> allHospitals = hospitalFeignClient.getAllHospitals();
+//	    String policyHospitalName = policyClaim.getHospitalName();
+//	 
+//	    if(!allHospitals.contains(policyHospitalName)) {
+//	    	return false;
+//	    }
+	    return true;
+	}
+
 	@Override
-	public List<UserPolicies> getAllUserPolicies(){
+	public List<PolicyClaim> getPreviousClaimsDetails(long userId) {
+		return policyClaimRepo.getPolicyClaimDetailsByUserId(userId);
+	}
+
+	@Override
+	public List<UserPolicies> getAllUserPolicies() {
 		return userPolicyRepo.findAll();
 	}
-	
+
 	@Override
-	public List<PolicyClaim> getPendingClaims(){
+	public List<PolicyClaim> getPendingClaims() {
 		List<PolicyClaim> policyClaimsWithPendingStatus = policyClaimRepo.getPendingClaims("Pending");
 		return policyClaimsWithPendingStatus;
 	}
-	
-	
+
 }

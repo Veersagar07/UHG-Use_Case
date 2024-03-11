@@ -3,6 +3,7 @@ package com.UHGUseCase.UserPolicies.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -69,5 +70,16 @@ public class UserPoliciesController {
 	@GetMapping("/getPendingClaims")
 	private List<PolicyClaim> getPendingClaims(){
 		return userPoliciesService.getPendingClaims();
+	}
+	
+	@PostMapping("/processClaim")
+	private ResponseEntity<String> processClaim(@RequestParam long userId,@RequestParam long policyId,@RequestParam String action){
+		 ResponseEntity<String> response = userPoliciesService.processClaim(userId, policyId, action);
+		if(response!=null) {
+			return response;
+		}
+		else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 }

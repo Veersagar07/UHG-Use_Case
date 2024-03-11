@@ -22,4 +22,5 @@ public interface UserPoliciesService {
 	List<PolicyClaim> getPreviousClaimsDetails(long userId);
 	List<UserPolicies> getAllUserPolicies();
 	List<PolicyClaim> getPendingClaims();
+	ResponseEntity<String>  processClaim(long userId, long policyId, String action);
 }
