@@ -16,6 +16,7 @@ public interface UserPolicyRepo extends JpaRepository<UserPolicies, Long> {
 	 @Query(value="SELECT * from `user-policies` where user_id=?1",nativeQuery = true)
 	 List<UserPolicies> getPolicyByUserId(long userId);
 	 
-	 @Query(value="SELECT * from `user-policies` where user_id=?1 and policy_id=?1",nativeQuery = true)
+	 @Query(value="SELECT * from `user-policies` where user_id=?1 and policy_id=?2",nativeQuery = true)
 	 UserPolicies findByUserIdAndPolicyId(long userId,long policyId);
+	 
 }

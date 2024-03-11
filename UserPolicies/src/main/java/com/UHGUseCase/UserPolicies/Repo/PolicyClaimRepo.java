@@ -11,4 +11,6 @@ public interface PolicyClaimRepo extends JpaRepository<PolicyClaim, Long>{
 	 @Query(value="SELECT * from `policy claim` where user_id=?1",nativeQuery = true)
 	 List<PolicyClaim> getPolicyClaimDetailsByUserId(long userId);
 	 
+	 @Query(value="SELECT * from `policy claim` where claim_status=?1",nativeQuery = true)
+	 List<PolicyClaim> getPendingClaims(String claimStatus);
 }

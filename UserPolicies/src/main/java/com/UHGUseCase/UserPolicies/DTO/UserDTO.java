@@ -16,14 +16,14 @@ public class UserDTO {
 	private Long phone;
 	private String email;
 	private String password;
-	private Set<String> roles = new HashSet<>();
+	private Set<RoleDTO> roles = new HashSet<>();
 
 	public UserDTO() {
 		super();
 	}
 
 	public UserDTO(long userId, String firstName, String lastName, Long phone, String email, String password,
-			Set<String> roles) {
+			Set<RoleDTO> roles) {
 		super();
 		this.userId = userId;
 		this.firstName = firstName;
@@ -82,11 +82,11 @@ public class UserDTO {
 		this.password = password;
 	}
 
-	public Set<String> getRoles() {
+	public Set<RoleDTO> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Set<String> roles) {
+	public void setRoles(Set<RoleDTO> roles) {
 		this.roles = roles;
 	}
 

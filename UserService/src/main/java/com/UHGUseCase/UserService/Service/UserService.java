@@ -11,4 +11,5 @@ public interface UserService {
 	AuthnticationResponce loginUser(AuthenticationDTO authenticationDTO);
 	List<User> findByUserId(long userId);
 	void updateUser(long userId, User updatedUser, ERole roleName);
+	List<User> findAll();
 }

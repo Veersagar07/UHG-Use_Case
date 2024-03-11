@@ -1,7 +1,12 @@
 package com.UHGUsecase.PoilicyService.Controller;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -70,5 +75,27 @@ public class PolicyController {
 	}
 	
 	
+	@GetMapping("/findAll")
+	public List<Policy> getAllPolicies(){
+		return policyService.findAll();
+	}
+	
+	@GetMapping("/generatePdf")
+	public ResponseEntity<InputStreamResource> generatePdf(@RequestParam long policyId) {
+		List<Policy> policies=policyService.findByPolicyId(policyId);
+		if(!policies.isEmpty()) {
+		ByteArrayInputStream pdfStream=policyService.generatePolicyPdf(policies.get(0));
+		HttpHeaders headers=new HttpHeaders();
+		headers.add(headers.CONTENT_DISPOSITION,"inline: filename=policy.pdf");
+		return ResponseEntity.
+				ok().
+				headers(headers).
+				contentType(MediaType.APPLICATION_PDF).
+				body(new InputStreamResource(pdfStream));
+		}
+		else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 
 }

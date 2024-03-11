@@ -69,4 +69,9 @@ public class UserServiceIMPL implements UserService {
 		return userRepo.findByUserId(userId);
 	}
 	
+	@Override
+	public List<User> findAll(){
+		return userRepo.findAll();
+	}
+	
 }

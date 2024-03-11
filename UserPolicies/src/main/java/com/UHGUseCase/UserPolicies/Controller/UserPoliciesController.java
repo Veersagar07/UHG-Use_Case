@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.UHGUseCase.UserPolicies.DTO.PolicyClaimResponse;
 import com.UHGUseCase.UserPolicies.DTO.PolicyDTO;
 import com.UHGUseCase.UserPolicies.Entity.PolicyClaim;
+import com.UHGUseCase.UserPolicies.PaymentScheduler.PaymentReminderScheduler;
 import com.UHGUseCase.UserPolicies.Service.UserPoliciesService;
 
 @RestController
@@ -22,6 +24,9 @@ import com.UHGUseCase.UserPolicies.Service.UserPoliciesService;
 public class UserPoliciesController {
 	@Autowired
 	private UserPoliciesService userPoliciesService;
+	
+	@Autowired
+	private PaymentReminderScheduler scheduler;
 
 	@PostMapping("/optForPolicy")
 	public ResponseEntity<String> optForPolicy(@RequestParam long userId, @RequestParam long policyId) {
@@ -52,5 +57,17 @@ public class UserPoliciesController {
 	private List<PolicyClaim> getPreviousClaimDetails(@RequestParam long userId){
 		List<PolicyClaim> policyClaims=userPoliciesService.getPreviousClaimsDetails(userId);
 		return policyClaims;
+	}
+	
+	
+	@Scheduled(cron = "* * * * * *")
+	@GetMapping("/reminder")
+	public void sendReminder(){
+		scheduler.scheduleEmail();
+	}
+	
+	@GetMapping("/getPendingClaims")
+	private List<PolicyClaim> getPendingClaims(){
+		return userPoliciesService.getPendingClaims();
 	}
 }

@@ -1,5 +1,6 @@
 package com.UHGUsecase.PoilicyService.Service;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
 import com.UHGUsecase.PoilicyService.Entity.Policy;
@@ -16,5 +17,9 @@ public interface PolicyService {
 
 	void deletePolicy(long policyId);
 
-	List<Policy> findByPolicyId(long policyId);	
+	List<Policy> findByPolicyId(long policyId);
+
+	List<Policy> findAll();
+
+	ByteArrayInputStream generatePolicyPdf(Policy policy);
 }
