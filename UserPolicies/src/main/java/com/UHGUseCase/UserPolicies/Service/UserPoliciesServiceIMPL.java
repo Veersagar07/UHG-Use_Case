@@ -136,7 +136,7 @@ public class UserPoliciesServiceIMPL implements UserPoliciesService {
 
 	@Override
 	@Transactional
-	public ResponseEntity<String> processClaim(long userId, long policyId) {
+	public ResponseEntity<String> processClaim() {
 
 		List<PolicyClaim> pendingClaims = policyClaimRepo.getPendingClaims("Pending");
 		if (!pendingClaims.isEmpty()) {
