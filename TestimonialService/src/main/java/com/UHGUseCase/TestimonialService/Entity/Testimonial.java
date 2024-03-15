@@ -20,13 +20,15 @@ public class Testimonial {
 	private Integer rating;
 	private String status;
 	private LocalDateTime date;
+	private String firstName;
+	private String policyName;
 
 	public Testimonial() {
 		super();
 	}
 
 	public Testimonial(Long id, long userId, long policyId, String feedback, Integer rating, String status,
-			LocalDateTime date) {
+			LocalDateTime date, String firstName, String policyName) {
 		super();
 		Id = id;
 		this.userId = userId;
@@ -35,6 +37,8 @@ public class Testimonial {
 		this.rating = rating;
 		this.status = status;
 		this.date = date;
+		this.firstName = firstName;
+		this.policyName = policyName;
 	}
 
 	public Long getId() {
@@ -92,5 +96,22 @@ public class Testimonial {
 	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getPolicyName() {
+		return policyName;
+	}
+
+	public void setPolicyName(String policyName) {
+		this.policyName = policyName;
+	}
+
 
 }

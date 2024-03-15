@@ -2,7 +2,6 @@ package com.UHGUseCase.TestimonialService.DTO;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class UserDTO {
@@ -13,14 +12,14 @@ public class UserDTO {
 	private Long phone;
 	private String email;
 	private String password;
-	private Set<String> roles = new HashSet<>();
+	private Set<RoleDTO> roles = new HashSet<>();
 
 	public UserDTO() {
 		super();
 	}
 
 	public UserDTO(long userId, String firstName, String lastName, Long phone, String email, String password,
-			Set<String> roles) {
+			Set<com.UHGUseCase.TestimonialService.DTO.RoleDTO> roles) {
 		super();
 		this.userId = userId;
 		this.firstName = firstName;
@@ -79,14 +78,12 @@ public class UserDTO {
 		this.password = password;
 	}
 
-	public Set<String> getRoles() {
+	public Set<RoleDTO> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Set<String> roles) {
+	public void setRoles(Set<RoleDTO> roles) {
 		this.roles = roles;
 	}
-	
-	
 
 }

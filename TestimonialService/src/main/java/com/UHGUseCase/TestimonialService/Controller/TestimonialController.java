@@ -34,4 +34,10 @@ public class TestimonialController {
 	public List<Testimonial> getTestimonial(@RequestParam long policyId){
 		return testimonialService.getTestimonialsByPolicyId(policyId);
 	}
+	
+	@PostMapping("/processTestimonial")
+	public ResponseEntity<String> processTestimonial(@RequestParam long testimonialId, @RequestParam String action){
+		ResponseEntity<String> response= testimonialService.processTestimonial(testimonialId,action);
+		return response;
+	}
 }

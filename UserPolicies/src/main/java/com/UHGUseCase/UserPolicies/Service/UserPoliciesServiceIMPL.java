@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -84,6 +85,13 @@ public class UserPoliciesServiceIMPL implements UserPoliciesService {
 
 	@Override
 	public ResponseEntity<String> applyforClaim(long userId, long policyId, long totalAmount, String hospitalName) {
+		
+		Optional<PolicyClaim> existingTestimonial = policyClaimRepo.findByUserIdAndPolicyId(userId,policyId);
+		if(existingTestimonial.isPresent()) {
+			return ResponseEntity.badRequest().body("Claim Already Exist for this policy");
+		}
+		
+		
 		PolicyClaim claim = new PolicyClaim();
 		List<PolicyDTO> policyDTOList = policyFeignClient.findByPolicyId(policyId);
 		if (!policyDTOList.isEmpty()) {
