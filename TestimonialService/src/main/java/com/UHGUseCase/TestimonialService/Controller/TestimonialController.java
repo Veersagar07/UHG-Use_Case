@@ -40,4 +40,15 @@ public class TestimonialController {
 		ResponseEntity<String> response= testimonialService.processTestimonial(testimonialId,action);
 		return response;
 	}
+	
+	@GetMapping("/getApprovedTestimonial")
+	public List<Testimonial> getApprovedTestimonial(){
+		return testimonialService.getApprovedTestimonial();
+	}
+	
+	@GetMapping("/getPendingTestimonial")
+	public List<Testimonial> getAllPendingTestimonials(){
+		return testimonialService.getApprovedTestimonial();
+	}
+	
 }

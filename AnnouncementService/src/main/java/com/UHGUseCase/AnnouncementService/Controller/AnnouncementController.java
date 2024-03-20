@@ -34,6 +34,15 @@ public class AnnouncementController {
         return response;
     }
 	
+	@PostMapping("/customAnnouncement")
+    public ResponseEntity<String> customAnnouncement(@RequestBody AnnouncementDTO announcementDto) {
+        String textArea = announcementDto.getTextArea();
+        LocalDateTime startTime = LocalDateTime.now();
+        LocalDateTime endTime = announcementDto.getEndDate();
+        ResponseEntity<String> response = announcementService.startAnnouncement(textArea,startTime,endTime);
+        return response;
+    }
+	
 	
 	@GetMapping("/fetchAnn")
     public ResponseEntity<String> getAnnouncementContent() {
